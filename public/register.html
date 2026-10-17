@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join Bloom — Create Your Account</title>
+  <meta name="description" content="Create your Bloom account. A gentle, elegant to-do list to nurture your daily goals and dreams.">
+
+  <!-- Favicon with floral SVG -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌸</text></svg>">
+
+  <!-- Google Fonts: Playfair Display (Serif) & Plus Jakarta Sans (Sans-serif) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-body">
+
+  <!-- Floating Ambient Petals -->
+  <div class="petals-container" aria-hidden="true">
+    <span class="petal p1">🌸</span>
+    <span class="petal p2">🍃</span>
+    <span class="petal p3">🌷</span>
+    <span class="petal p4">🤍</span>
+    <span class="petal p5">🌿</span>
+  </div>
+
+  <main class="auth-page-wrapper">
+    <div class="auth-card">
+      
+      <!-- Brand & Registration Header -->
+      <header class="auth-header">
+        <div class="brand-header centered">
+          <span class="brand-icon">🌸</span>
+          <h1 class="brand-title">Bloom</h1>
+        </div>
+        <p class="brand-tagline">tend to your little list</p>
+        <div class="auth-welcome-badge">
+          <span>Plant your personal garden and begin tending to your dreams 🌷</span>
+        </div>
+      </header>
+
+      <!-- Alert Message Box -->
+      <div id="authAlert" class="auth-alert" style="display: none;" role="alert">
+        <span class="alert-icon">⚠️</span>
+        <span class="alert-text" id="authAlertText"></span>
+      </div>
+
+      <!-- Registration Form -->
+      <form id="registerForm" class="auth-form" novalidate>
+        
+        <!-- Full Name Field -->
+        <div class="form-group">
+          <label for="regName" class="form-label">
+            Full Name <span class="required-star">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input
+              type="text"
+              id="regName"
+              name="name"
+              class="form-control with-icon"
+              placeholder="Your lovely name"
+              autocomplete="name"
+              required
+            >
+          </div>
+          <div class="input-error" id="regNameError"></div>
+        </div>
+
+        <!-- Email Address Field -->
+        <div class="form-group">
+          <label for="regEmail" class="form-label">
+            Email Address <span class="required-star">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon">💌</span>
+            <input
+              type="email"
+              id="regEmail"
+              name="email"
+              class="form-control with-icon"
+              placeholder="you@gentleblossom.com"
+              autocomplete="email"
+              required
+            >
+          </div>
+          <div class="input-error" id="regEmailError"></div>
+        </div>
+
+        <!-- Password Field with Show/Hide Toggle -->
+        <div class="form-group">
+          <label for="regPassword" class="form-label">
+            Password <span class="required-star">*</span>
+            <span class="field-hint">(at least 6 characters)</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input
+              type="password"
+              id="regPassword"
+              name="password"
+              class="form-control with-icon with-toggle"
+              placeholder="Create a safe password"
+              autocomplete="new-password"
+              required
+            >
+            <button
+              type="button"
+              class="password-toggle-btn"
+              data-target="regPassword"
+              aria-label="Show password"
+              title="Show password"
+            >👁️</button>
+          </div>
+          <div class="input-error" id="regPasswordError"></div>
+        </div>
+
+        <!-- Confirm Password Field with Show/Hide Toggle -->
+        <div class="form-group">
+          <label for="regConfirmPassword" class="form-label">
+            Confirm Password <span class="required-star">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔑</span>
+            <input
+              type="password"
+              id="regConfirmPassword"
+              name="confirmPassword"
+              class="form-control with-icon with-toggle"
+              placeholder="Repeat your password"
+              autocomplete="new-password"
+              required
+            >
+            <button
+              type="button"
+              class="password-toggle-btn"
+              data-target="regConfirmPassword"
+              aria-label="Show password"
+              title="Show password"
+            >👁️</button>
+          </div>
+          <div class="input-error" id="regConfirmPasswordError"></div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" id="regSubmitBtn" class="btn btn-primary btn-block">
+          <span class="btn-text">Create Account 🌸</span>
+          <span class="btn-spinner" style="display: none;"></span>
+        </button>
+
+      </form>
+
+      <!-- Switch to Login Link -->
+      <footer class="auth-footer">
+        <p class="auth-switch-text">
+          Already have an account?
+          <a href="/login.html" class="auth-link">Sign In 🤍</a>
+        </p>
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- jQuery & Auth Script -->
+  <script src="js/jquery.min.js"></script>
+  <script>
+    if (typeof jQuery === 'undefined') {
+      document.write('<script src="https://code.jquery.com/jquery-3.7.1.min.js"><\/script>');
+    }
+  </script>
+  <script src="js/auth.js"></script>
+
+</body>
+</html>

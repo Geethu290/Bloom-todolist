@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bloom — Your Gentle To-Do List</title>
+  <meta name="description" content="Bloom is a gentle, elegant, feminine To-Do list web application designed to help you nurture your tasks with care.">
+  
+  <!-- Favicon with floral SVG -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌸</text></svg>">
+  
+  <!-- Google Fonts: Playfair Display (Serif) & Plus Jakarta Sans (Sans-serif) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Floating Background Petals / Floral Ambiance -->
+  <div class="petals-container" aria-hidden="true">
+    <span class="petal p1">🌸</span>
+    <span class="petal p2">🍃</span>
+    <span class="petal p3">🌷</span>
+    <span class="petal p4">🤍</span>
+    <span class="petal p5">🌿</span>
+  </div>
+
+  <!-- Mobile Top Bar with Hamburger -->
+  <header class="mobile-top-bar">
+    <button id="mobileNavToggle" class="mobile-nav-btn" aria-label="Toggle navigation menu">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+    <div class="mobile-brand">
+      <span class="brand-flower">🌸</span>
+      <span class="brand-name">Bloom</span>
+    </div>
+    <button type="button" id="mobileLogoutBtn" class="logout-icon-btn" title="Sign out of Bloom" aria-label="Sign out">🍃</button>
+  </header>
+
+  <!-- Mobile Overlay Backdrop -->
+  <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+  <!-- App Layout Wrapper -->
+  <div class="app-layout">
+    
+    <!-- ========================================================
+         SIDEBAR NAVIGATION
+         ======================================================== -->
+    <aside id="sidebar" class="sidebar" aria-label="Sidebar navigation">
+      
+      <!-- Brand & Tagline -->
+      <div class="sidebar-brand-box">
+        <div class="brand-header">
+          <span class="brand-icon">🌸</span>
+          <h1 class="brand-title">Bloom</h1>
+        </div>
+        <p class="brand-tagline">tend to your little list</p>
+      </div>
+
+      <!-- Navigation Filters -->
+      <nav class="sidebar-nav">
+        <p class="nav-section-title">MY GARDEN</p>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <button class="nav-filter-btn active" data-filter="all">
+              <span class="nav-icon">🌸</span>
+              <span class="nav-label">All Tasks</span>
+              <span class="nav-badge" id="countAll">0</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-filter-btn" data-filter="today">
+              <span class="nav-icon">🌷</span>
+              <span class="nav-label">Today</span>
+              <span class="nav-badge" id="countToday">0</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-filter-btn" data-filter="upcoming">
+              <span class="nav-icon">🌿</span>
+              <span class="nav-label">Upcoming</span>
+              <span class="nav-badge" id="countUpcoming">0</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-filter-btn" data-filter="in-progress">
+              <span class="nav-icon">🌼</span>
+              <span class="nav-label">In Progress</span>
+              <span class="nav-badge" id="countInProgress">0</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-filter-btn" data-filter="completed">
+              <span class="nav-icon">🤍</span>
+              <span class="nav-label">Completed</span>
+              <span class="nav-badge" id="countCompleted">0</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Completed Tasks Garden Progress Card -->
+      <div class="sidebar-card garden-progress-card">
+        <div class="card-icon-title">
+          <span class="mini-icon">🌱</span>
+          <span class="card-heading">Garden Harvest</span>
+        </div>
+        <div class="progress-details">
+          <div class="progress-stat">
+            <span class="stat-large" id="sidebarCompletedCount">0</span>
+            <span class="stat-sub">bloomed so far</span>
+          </div>
+          <div class="progress-bar-bg" title="Task completion progress">
+            <div class="progress-bar-fill" id="sidebarProgressFill" style="width: 0%;"></div>
+          </div>
+          <p class="progress-percent-label" id="sidebarProgressLabel">0% completed</p>
+        </div>
+      </div>
+
+      <!-- Motivational Message Card -->
+      <div class="sidebar-card quote-card">
+        <span class="quote-symbol">🌷</span>
+        <p class="sidebar-quote-text" id="sidebarQuote">
+          "Little seeds grow into beautiful flowers. Take it one gentle step at a time."
+        </p>
+      </div>
+
+      <!-- User Profile Card & Sign Out -->
+      <div class="sidebar-user-card" id="sidebarUserCard">
+        <div class="user-profile-info">
+          <div class="user-avatar" id="userAvatar">🌸</div>
+          <div class="user-meta">
+            <span class="user-name-display" id="sidebarUserName">My Garden</span>
+            <span class="user-role-label">Nurturer 🌿</span>
+          </div>
+        </div>
+        <button type="button" class="logout-icon-btn" id="sidebarLogoutBtn" title="Sign out of Bloom" aria-label="Sign out">
+          🍃
+        </button>
+      </div>
+
+      <!-- Database Connection Status Indicator -->
+      <div class="db-status-pill" id="dbStatusPill" title="MongoDB Connection Status">
+        <span class="db-dot"></span>
+        <span class="db-text" id="dbStatusText">Checking MongoDB...</span>
+      </div>
+
+    </aside>
+
+    <!-- ========================================================
+         MAIN CONTENT AREA
+         ======================================================== -->
+    <main class="main-content">
+
+      <!-- Database Warning Banner (hidden when connected) -->
+      <div id="dbWarningBanner" class="db-warning-banner" style="display: none;">
+        <span class="banner-icon">⚠️</span>
+        <div class="banner-body">
+          <strong>MongoDB is not connected.</strong>
+          <span>Tasks cannot be saved to the database. Please ensure MongoDB is running (locally or MongoDB Atlas) and restart the server.</span>
+        </div>
+      </div>
+
+      <!-- Main Header -->
+      <header class="main-header">
+        <div class="header-left">
+          <div class="greeting-badge">
+            <span class="sparkle">✨</span>
+            <span id="headerGreeting">A little space for you</span>
+          </div>
+          <h2 class="dynamic-heading" id="dynamicHeading">All Tasks 🌸</h2>
+          <p class="header-date" id="currentDateDisplay">Loading today's date...</p>
+        </div>
+        
+        <div class="header-right">
+          <div class="header-user-controls">
+            <div class="motivational-banner" id="motivationalBanner" title="Click for a fresh gentle thought">
+              <span class="banner-flower">🌸</span>
+              <span class="quote-content" id="headerQuoteText">Bloom where you are planted.</span>
+              <span class="quote-refresh-hint">↻</span>
+            </div>
+            <button type="button" id="headerLogoutBtn" class="btn-header-logout" title="Sign out of Bloom">
+              <span>Sign Out</span> 🍃
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Dashboard Cards Section -->
+      <section class="dashboard-cards-grid" aria-label="Dashboard overview">
+        
+        <!-- Card 1: Completed Today -->
+        <div class="dash-card">
+          <div class="dash-card-icon today-icon">🌷</div>
+          <div class="dash-card-info">
+            <span class="dash-label">Completed Today</span>
+            <span class="dash-value" id="dashCompletedToday">0</span>
+            <span class="dash-hint">blossoms nurtured</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Total Pending Tasks -->
+        <div class="dash-card">
+          <div class="dash-card-icon pending-icon">🌿</div>
+          <div class="dash-card-info">
+            <span class="dash-label">To Tend To</span>
+            <span class="dash-value" id="dashPendingTotal">0</span>
+            <span class="dash-hint">gentle seeds awaiting</span>
+          </div>
+        </div>
+
+        <!-- Card 3: Overall Progress -->
+        <div class="dash-card">
+          <div class="dash-card-icon progress-icon">🤍</div>
+          <div class="dash-card-info">
+            <span class="dash-label">Garden Progress</span>
+            <div class="dash-progress-row">
+              <span class="dash-value" id="dashProgressPercent">0%</span>
+            </div>
+            <div class="progress-bar-bg mini">
+              <div class="progress-bar-fill" id="dashProgressFill" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Daily Heart & Mood Check-in -->
+        <div class="dash-card mood-card">
+          <div class="mood-header">
+            <span class="mood-title">Daily Heart Check-in 💌</span>
+            <span class="mood-selected-label" id="moodResponse">Choose your vibe</span>
+          </div>
+          <div class="mood-pills-row" role="group" aria-label="Select today's mood">
+            <button type="button" class="mood-btn" data-mood="Blooming" data-message="Blooming bright! Let's cherish each moment 🌸" title="Blooming">🌸</button>
+            <button type="button" class="mood-btn" data-mood="Peaceful" data-message="Peaceful & grounded. Move at your own pace 🌿" title="Peaceful">🌿</button>
+            <button type="button" class="mood-btn" data-mood="Gentle" data-message="Gentle heart. Be extra kind to yourself today ☁️" title="Gentle">☁️</button>
+            <button type="button" class="mood-btn" data-mood="Cozy" data-message="Cozy & warm. Sip something nice while you work ☕" title="Cozy">☕</button>
+            <button type="button" class="mood-btn" data-mood="Inspired" data-message="Inspired & hopeful! Beautiful things await 🌻" title="Inspired">🌻</button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================================
+           ADD TASK FORM
+           ======================================================== -->
+      <section class="add-task-section" aria-label="Plant a new task">
+        <div class="card add-task-card">
+          <div class="card-header-toggle" id="addTaskHeader">
+            <div class="form-title-group">
+              <span class="form-title-flower">🌸</span>
+              <h3 class="form-title">Plant a New Task</h3>
+            </div>
+            <span class="form-toggle-hint">tend gently</span>
+          </div>
+
+          <form id="addTaskForm" class="add-task-form" novalidate>
+            <!-- Title Input (Required) -->
+            <div class="form-group">
+              <label for="taskTitle" class="form-label">
+                Task Title <span class="required-star">*</span>
+              </label>
+              <input
+                type="text"
+                id="taskTitle"
+                name="title"
+                class="form-control"
+                placeholder="What gentle step would you like to nurture? (e.g. Finish WAD assignment)"
+                maxlength="120"
+                required
+              >
+              <div class="input-error" id="titleError"></div>
+            </div>
+
+            <!-- Description (Optional) -->
+            <div class="form-group">
+              <label for="taskDescription" class="form-label">
+                Notes & Reflections <span class="optional-label">(optional)</span>
+              </label>
+              <textarea
+                id="taskDescription"
+                name="description"
+                class="form-control textarea"
+                rows="2"
+                placeholder="Add little details, steps, or thoughts..."
+                maxlength="500"
+              ></textarea>
+            </div>
+
+            <!-- Form Row: Due Date, Priority, Status -->
+            <div class="form-row">
+              <!-- Due Date -->
+              <div class="form-group col">
+                <label for="taskDueDate" class="form-label">Due Date</label>
+                <input
+                  type="date"
+                  id="taskDueDate"
+                  name="dueDate"
+                  class="form-control"
+                >
+              </div>
+
+              <!-- Priority -->
+              <div class="form-group col">
+                <label for="taskPriority" class="form-label">Priority</label>
+                <select id="taskPriority" name="priority" class="form-control">
+                  <option value="Low">🌿 Low</option>
+                  <option value="Medium" selected>🌾 Medium</option>
+                  <option value="High">🌸 High</option>
+                </select>
+              </div>
+
+              <!-- Status -->
+              <div class="form-group col">
+                <label for="taskStatus" class="form-label">Status</label>
+                <select id="taskStatus" name="status" class="form-control">
+                  <option value="To Do" selected>📝 To Do</option>
+                  <option value="In Progress">⏳ In Progress</option>
+                  <option value="Completed">✅ Completed</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Form Action Buttons -->
+            <div class="form-actions">
+              <button type="button" id="resetTaskBtn" class="btn btn-secondary">
+                Clear
+              </button>
+              <button type="submit" id="submitTaskBtn" class="btn btn-primary">
+                <span class="btn-text">Plant Task 🌸</span>
+                <span class="btn-spinner" style="display: none;"></span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           TASK LIST CONTROLS & TASK CARDS
+           ======================================================== -->
+      <section class="task-list-section" aria-label="Tasks list">
+        
+        <!-- Controls Bar: Search & Sort -->
+        <div class="task-controls-bar">
+          
+          <!-- Search Box -->
+          <div class="search-box-wrapper">
+            <span class="search-icon">🔍</span>
+            <input
+              type="text"
+              id="taskSearchInput"
+              class="search-input"
+              placeholder="Search your blossoms by keyword..."
+              aria-label="Search tasks"
+            >
+            <button type="button" id="clearSearchBtn" class="clear-search-btn" style="display: none;" title="Clear search">✕</button>
+          </div>
+
+          <!-- Sort Dropdown -->
+          <div class="sort-box-wrapper">
+            <label for="taskSortSelect" class="sort-label">Sort by:</label>
+            <select id="taskSortSelect" class="sort-select" aria-label="Sort tasks">
+              <option value="newest" selected>🌱 Newest First</option>
+              <option value="dueDateSoon">📅 Due Date (Soonest)</option>
+              <option value="dueDateLate">📅 Due Date (Latest)</option>
+              <option value="priorityHigh">🌸 Priority (High to Low)</option>
+              <option value="priorityLow">🌿 Priority (Low to High)</option>
+              <option value="titleAsc">🔤 Title (A to Z)</option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- Active Filter Indicator Pill -->
+        <div class="filter-indicator-row">
+          <span class="filter-chip">
+            <span class="filter-chip-icon" id="currentFilterIcon">🌸</span>
+            <span id="currentFilterText">Showing: All Tasks</span>
+          </span>
+          <span class="task-count-indicator" id="taskCountIndicator">0 tasks</span>
+        </div>
+
+        <!-- Task Cards Container -->
+        <div id="taskListContainer" class="task-cards-list">
+          <!-- Dynamically populated by jQuery AJAX -->
+          <div class="loading-state">
+            <div class="bloom-spinner">🌸</div>
+            <p>Gathering your blooms...</p>
+          </div>
+        </div>
+
+        <!-- Empty State Container (rendered when no tasks match) -->
+        <div id="emptyStateContainer" class="empty-garden-state" style="display: none;">
+          <div class="empty-flower-icon">🌷</div>
+          <h4 class="empty-title">Your little garden is empty 🌷</h4>
+          <p class="empty-subtitle">Plant a task above and watch it bloom.</p>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- ========================================================
+       EDIT TASK MODAL
+       ======================================================== -->
+  <div id="editTaskModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-flower">✏️🌸</span>
+          <h3 id="editModalTitle" class="modal-title">Nurture Your Blossom</h3>
+        </div>
+        <button type="button" class="modal-close-btn" id="closeEditModalBtn" aria-label="Close modal">✕</button>
+      </div>
+
+      <form id="editTaskForm" novalidate>
+        <input type="hidden" id="editTaskId">
+
+        <div class="form-group">
+          <label for="editTaskTitle" class="form-label">
+            Task Title <span class="required-star">*</span>
+          </label>
+          <input
+            type="text"
+            id="editTaskTitle"
+            class="form-control"
+            maxlength="120"
+            required
+          >
+          <div class="input-error" id="editTitleError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="editTaskDescription" class="form-label">
+            Notes & Reflections <span class="optional-label">(optional)</span>
+          </label>
+          <textarea
+            id="editTaskDescription"
+            class="form-control textarea"
+            rows="3"
+            maxlength="500"
+          ></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="editTaskDueDate" class="form-label">Due Date</label>
+            <input type="date" id="editTaskDueDate" class="form-control">
+          </div>
+
+          <div class="form-group col">
+            <label for="editTaskPriority" class="form-label">Priority</label>
+            <select id="editTaskPriority" class="form-control">
+              <option value="Low">🌿 Low</option>
+              <option value="Medium">🌾 Medium</option>
+              <option value="High">🌸 High</option>
+            </select>
+          </div>
+
+          <div class="form-group col">
+            <label for="editTaskStatus" class="form-label">Status</label>
+            <select id="editTaskStatus" class="form-control">
+              <option value="To Do">📝 To Do</option>
+              <option value="In Progress">⏳ In Progress</option>
+              <option value="Completed">✅ Completed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" id="cancelEditBtn" class="btn btn-secondary">
+            Cancel
+          </button>
+          <button type="submit" id="saveEditBtn" class="btn btn-primary">
+            <span class="btn-text">Save Changes 🌿</span>
+            <span class="btn-spinner" style="display: none;"></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       DELETE CONFIRMATION MODAL
+       ======================================================== -->
+  <div id="deleteModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+    <div class="modal-card delete-card">
+      <div class="delete-icon-circle">🍃</div>
+      <h3 id="deleteModalTitle" class="delete-title">Let this task go?</h3>
+      <p class="delete-message">
+        Are you sure you want to gently remove <strong id="deleteTaskTitleDisplay">this task</strong> from your garden?
+      </p>
+      <input type="hidden" id="deleteTaskId">
+      <div class="modal-actions centered">
+        <button type="button" id="cancelDeleteBtn" class="btn btn-secondary">
+          Keep It 🌸
+        </button>
+        <button type="button" id="confirmDeleteBtn" class="btn btn-danger">
+          <span class="btn-text">Yes, Remove 🍃</span>
+          <span class="btn-spinner" style="display: none;"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       TOAST NOTIFICATION SYSTEM
+       ======================================================== -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- ========================================================
+       SCRIPTS: jQuery & App.js
+       ======================================================== -->
+  <!-- Try local jQuery first; fallback to CDN if needed -->
+  <script src="js/jquery.min.js"></script>
+  <script>
+    if (typeof jQuery === 'undefined') {
+      document.write('<script src="https://code.jquery.com/jquery-3.7.1.min.js"><\/script>');
+    }
+  </script>
+  <!-- Application Logic -->
+  <script src="js/app.js"></script>
+
+</body>
+</html>

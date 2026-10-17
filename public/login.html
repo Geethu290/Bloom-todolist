@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Bloom — Sign In</title>
+  <meta name="description" content="Sign in to Bloom, your gentle to-do list. A little space for your dreams, plans & everyday moments.">
+
+  <!-- Favicon with floral SVG -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌸</text></svg>">
+
+  <!-- Google Fonts: Playfair Display (Serif) & Plus Jakarta Sans (Sans-serif) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-body">
+
+  <!-- Floating Ambient Petals -->
+  <div class="petals-container" aria-hidden="true">
+    <span class="petal p1">🌸</span>
+    <span class="petal p2">🍃</span>
+    <span class="petal p3">🌷</span>
+    <span class="petal p4">🤍</span>
+    <span class="petal p5">🌿</span>
+  </div>
+
+  <main class="auth-page-wrapper">
+    <div class="auth-card">
+      
+      <!-- Brand & Welcome Header -->
+      <header class="auth-header">
+        <div class="brand-header centered">
+          <span class="brand-icon">🌸</span>
+          <h1 class="brand-title">Bloom</h1>
+        </div>
+        <p class="brand-tagline">tend to your little list</p>
+        <div class="auth-welcome-badge">
+          <span>A little space for your dreams, plans & everyday moments ✨</span>
+        </div>
+      </header>
+
+      <!-- Alert Message Box -->
+      <div id="authAlert" class="auth-alert" style="display: none;" role="alert">
+        <span class="alert-icon">⚠️</span>
+        <span class="alert-text" id="authAlertText"></span>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" class="auth-form" novalidate>
+        
+        <!-- Email Field -->
+        <div class="form-group">
+          <label for="loginEmail" class="form-label">
+            Email Address <span class="required-star">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon">💌</span>
+            <input
+              type="email"
+              id="loginEmail"
+              name="email"
+              class="form-control with-icon"
+              placeholder="you@gentleblossom.com"
+              autocomplete="email"
+              required
+            >
+          </div>
+          <div class="input-error" id="loginEmailError"></div>
+        </div>
+
+        <!-- Password Field with Show/Hide Toggle -->
+        <div class="form-group">
+          <label for="loginPassword" class="form-label">
+            Password <span class="required-star">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input
+              type="password"
+              id="loginPassword"
+              name="password"
+              class="form-control with-icon with-toggle"
+              placeholder="Your secret passcode"
+              autocomplete="current-password"
+              required
+            >
+            <button
+              type="button"
+              class="password-toggle-btn"
+              data-target="loginPassword"
+              aria-label="Show password"
+              title="Show password"
+            >👁️</button>
+          </div>
+          <div class="input-error" id="loginPasswordError"></div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" id="loginSubmitBtn" class="btn btn-primary btn-block">
+          <span class="btn-text">Enter Your Garden 🌸</span>
+          <span class="btn-spinner" style="display: none;"></span>
+        </button>
+
+      </form>
+
+      <!-- Switch to Register Link -->
+      <footer class="auth-footer">
+        <p class="auth-switch-text">
+          New to Bloom?
+          <a href="/register.html" class="auth-link">Create Account 🌷</a>
+        </p>
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- jQuery & Auth Script -->
+  <script src="js/jquery.min.js"></script>
+  <script>
+    if (typeof jQuery === 'undefined') {
+      document.write('<script src="https://code.jquery.com/jquery-3.7.1.min.js"><\/script>');
+    }
+  </script>
+  <script src="js/auth.js"></script>
+
+</body>
+</html>

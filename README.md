@@ -279,6 +279,37 @@ Navigate to:
 
 ---
 
+## ☁️ Vercel Cloud Deployment Guide
+
+Bloom is configured out-of-the-box for **Vercel** serverless hosting:
+
+### Step 1: Set Up Free Online Database (MongoDB Atlas)
+1. Go to [mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas) and sign up for a free account.
+2. Click **Build a Database** and choose the **M0 Free** cluster.
+3. In **Database Access**: Create a username and password (e.g. `bloomuser` and your chosen password).
+4. In **Network Access**: Click **Add IP Address** → Choose **Allow Access from Anywhere** (`0.0.0.0/0`) so Vercel's cloud servers can connect.
+5. In **Database** → Click **Connect** → Choose **Drivers** (Node.js) → Copy the connection string:
+   ```text
+   mongodb+srv://<username>:<password>@cluster0.abcde.mongodb.net/bloom_db?retryWrites=true&w=majority
+   ```
+   *(Replace `<username>` and `<password>` with your database user credentials).*
+
+### Step 2: Deploy to Vercel
+1. Log in to [vercel.com](https://vercel.com) using your GitHub account (`Geethu290`).
+2. Click **"Add New..."** → **"Project"**.
+3. Under **Import Git Repository**, find **`Bloom-todolist`** and click **Import**.
+4. In the **Configure Project** screen:
+   - **Framework Preset:** Leave as *Other* (configured by `vercel.json`).
+   - Expand the **Environment Variables** section and add:
+     - `MONGODB_URI` = *(Your MongoDB Atlas connection string from Step 1)*
+     - `SESSION_SECRET` = *(Any secure random string, e.g. `bloom_production_secret_key_2026`)*
+     - `NODE_ENV` = `production`
+5. Click **Deploy**!
+6. In ~60 seconds, Vercel will complete the build and give you your live public URL:
+   `https://bloom-todolist-xxxx.vercel.app` 🌸
+
+---
+
 ## 📡 REST API Documentation
 
 ### Authentication Endpoints (`/api/auth`)

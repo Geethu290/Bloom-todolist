@@ -2,6 +2,7 @@
  * server.js
  * Main Express Application Server for Bloom To-Do List
  * Sets up middleware, database connection, secure sessions, authentication, and API routes.
+ * Configured for both local development and Vercel serverless deployment.
  */
 
 const express = require('express');
@@ -20,13 +21,24 @@ const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Connect to MongoDB
+// Trust reverse proxy (Crucial for Vercel deployment and secure cookies over HTTPS)
+app.set('trust proxy', 1);
+
+// Connect to MongoDB on startup
 connectDB();
 
 // Core Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Ensure database connection is established for serverless invocations
+app.use(async (req, res, next) => {
+  if (!isDbConnected()) {
+    await connectDB();
+  }
+  next();
+});
 
 // Configure Server-Side Sessions with MongoDB Store
 app.use(
@@ -41,7 +53,7 @@ app.use(
     }),
     cookie: {
       httpOnly: true, // Mitigate XSS attacks by disallowing client script cookie access
-      secure: process.env.NODE_ENV === 'production', // Use secure cookies in production HTTPS
+      secure: process.env.NODE_ENV === 'production', // Secure cookies in production HTTPS (e.g. Vercel)
       sameSite: 'lax', // CSRF protection
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
     },
@@ -88,7 +100,7 @@ app.use(notFoundHandler);
 // Centralized Error Handling Middleware
 app.use(errorHandler);
 
-// Start the HTTP Server
+// Start the HTTP Server when run directly (local development)
 let server;
 if (require.main === module) {
   server = app.listen(PORT, () => {
@@ -110,4 +122,7 @@ process.on('unhandledRejection', (err) => {
   console.error('❌ Unhandled Rejection:', err.message);
 });
 
-module.exports = { app, server };
+// Export app for Vercel serverless handler and test suites
+module.exports = app;
+module.exports.app = app;
+module.exports.server = server;

@@ -34,10 +34,13 @@ app.use(express.urlencoded({ extended: true }));
 
 // Ensure database connection is established for serverless invocations
 app.use(async (req, res, next) => {
-  if (!isDbConnected()) {
+  try {
     await connectDB();
+    next();
+  } catch (err) {
+    console.error('⚠️ DB connection error during request handling:', err.message);
+    res.status(503).json({ error: 'Database connection unavailable' });
   }
-  next();
 });
 
 // Configure Server-Side Sessions with MongoDB Store

@@ -10,23 +10,25 @@ const mongoose = require('mongoose');
 let isConnected = false;
 let cachedPromise = null;
 
+/* Revised connection logic: single shared promise, proper error propagation */
 const connectDB = async () => {
-  // 1. If connection is already open, reuse it immediately
+  // If already connected, resolve immediately
   if (mongoose.connection.readyState === 1) {
     isConnected = true;
     return mongoose.connection;
   }
 
-  // 2. If a connection is in flight, await the existing promise to avoid race conditions
+  // If a connection attempt is already in progress, return that promise
   if (cachedPromise) {
     return cachedPromise;
   }
 
   const uri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/bloom_db';
 
+  // Create a new connection promise and cache it
   cachedPromise = mongoose
     .connect(uri, {
-      serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds instead of hanging
+      serverSelectionTimeoutMS: 5000, // Fail fast if Atlas unavailable
     })
     .then((conn) => {
       isConnected = true;
@@ -34,11 +36,13 @@ const connectDB = async () => {
       return conn;
     })
     .catch((error) => {
+      // Reset cache so future attempts can retry
       cachedPromise = null;
       isConnected = false;
       console.error('❌ MongoDB Connection Error:', error.message);
-      console.error('💡 Tip: Make sure your MongoDB Atlas MONGODB_URI is configured in your environment variables.');
-      return null;
+      console.error('💡 Tip: Verify MONGODB_URI is set correctly in environment variables.');
+      // Propagate error to callers for proper handling
+      throw error;
     });
 
   return cachedPromise;
